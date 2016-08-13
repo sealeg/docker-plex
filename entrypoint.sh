@@ -17,7 +17,7 @@ if [ -z "$1" ]; then
     fi
 
     printf 'Setting permissions...'
-    chown -R plex.plex /data/*
+    chown -R plex.plex /data
     printf ' done\n'
 
     LD_LIBRARY_PATH=/usr/lib/plexmediaserver \
