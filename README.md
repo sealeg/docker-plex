@@ -1,4 +1,4 @@
-# plex
+# Plex Media Server
 
 Plex Media Server docker image.
 
