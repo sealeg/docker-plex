@@ -16,18 +16,25 @@ if [ -z "$1" ]; then
         exit 1
     fi
 
-    if [ ! -z "$MEDIA_MANAGER_GID" ]; then
-        printf 'Adding media_mgr (%s) group...' $MEDIA_MANAGER_GID
-        if ! groupadd --gid "$MEDIA_MANAGER_GID" media_mgr; then
-            printf 'Unable to create media_mgr (%s) group.' $MEDIA_MANAGER_GID
+    if [ ! -z "$MEDIA_MANAGER_UID" ]; then
+        printf 'Changing plex gid to %s...' $MEDIA_MANAGER_UID
+        if ! groupmod --gid "$MEDIA_MANAGER_UID" plex; then
+            printf 'Unable to change plex gid to %s.' $MEDIA_MANAGER_UID
 
             exit 1
         fi
-        usermod -a -G media_mgr plex
+        printf ' done\n'
+        printf 'Changing plex uid to %s...' $MEDIA_MANAGER_UID
+        if ! usermod --uid $MEDIA_MANAGER_UID plex; then
+            printf 'Unable to change plex uid to %s.' $MEDIA_MANAGER_UID
+
+            exit 1
+        fi
         printf ' done\n'
     fi
 
     printf 'Setting permissions...'
+    chown -R plex.plex /var/lib/plexmediaserver
     chown -R plex.plex /data
     printf ' done\n'
 
